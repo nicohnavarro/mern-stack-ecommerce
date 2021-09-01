@@ -6,5 +6,5 @@ import { MONGODB_URL } from "../config";
     useNewUrlParser:true,
     useUnifiedTopology:true,
   });
-  console.log('Database connect to: ',db.connection.name);
+console.log('Database connect to: ',db.connection.name);
 })();

@@ -1,5 +1,5 @@
 import express from 'express';
- 
+import "./config/mongoose";
 const app = express();
 
 app.listen(3000);
