@@ -1,6 +1,9 @@
-import express from 'express';
+import express from "express";
 import "./config/mongoose";
-const app = express();
+import productRoutes from "./routes/products.routes";
 
+const app = express();
+app.use(express.json());
+app.use(productRoutes);
 app.listen(3000);
-console.log('Server on port ',3000);
+console.log("Server on port ", 3000);
