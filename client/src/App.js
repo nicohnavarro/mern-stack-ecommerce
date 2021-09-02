@@ -1,10 +1,11 @@
-import './App.css';
-
+import "./App.css";
+import HomePage from "./pages/HomePage";
+import {ProductProvider} from './context/providers/ProductsContext'
 function App() {
   return (
-    <div className="App">
-      <h2>Nico</h2>
-    </div>
+    <ProductProvider>
+      <HomePage />
+    </ProductProvider>
   );
 }
 
