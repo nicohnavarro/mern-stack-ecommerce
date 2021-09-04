@@ -1,11 +1,19 @@
 import "./App.css";
 import HomePage from "./pages/HomePage";
-import {ProductProvider} from './context/providers/ProductsContext'
+import { ProductProvider } from "./context/providers/ProductsContext";
+import "bootswatch/dist/sandstone/bootstrap.min.css";
+import NavBar from "./components/ui/NavBar";
+
 function App() {
   return (
-    <ProductProvider>
-      <HomePage />
-    </ProductProvider>
+    <>
+      <NavBar />
+      <div className="container">
+        <ProductProvider>
+          <HomePage />
+        </ProductProvider>
+      </div>
+    </>
   );
 }
 

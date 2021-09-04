@@ -1,13 +1,19 @@
 import React, { useContext } from "react";
 import { ProductContext } from "../context/providers/ProductsContext";
 const HomePage = () => {
-  const { products } = useContext(ProductContext);
+  const { products, isLoading } = useContext(ProductContext);
 
-  console.log(products);
-  
+  if (isLoading) return <h1>Loading...</h1>;
   return (
-    <div>
-      <h1>Home page</h1>
+    <div className="row">
+      {products.map((product) => (
+        <div className="col-md-4">
+        <div className="card card-body">
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+        </div>
+        </div>
+      ))}
     </div>
   );
 };

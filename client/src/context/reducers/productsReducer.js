@@ -1,18 +1,31 @@
+import { productActions } from "../actions/productsActions";
 export const initialState = {
+  isLoading: false,
   products: [],
-  currentProduct: {},
+  errorMessage: "",
 };
 
-export const productsReducer = (state,actions) => {
+export const productsReducer = (state, actions) => {
   switch (actions.type) {
-    case 'LOAD_PRODUCTS':
-      return{
+    case productActions.LOAD_PRODUCTS:
+      return {
         ...state,
-        products:[1,2,]
-      }
-      break;
-  
+        isLoading: true,
+      };
+    case productActions.LOAD_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        products: actions.payload,
+      };
+    case productActions.LOAD_PRODUCTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: actions.payload,
+      };
+
     default:
       break;
   }
-}
+};
