@@ -2,14 +2,24 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="pricing-header p-3 pb-md-4 mx-auto text-center">
-      <h1 className="display-4 fw-normal">This is commerce</h1>
-      <p className="fs-5 text-muted">
-        Quickly build an effective pricing table for your potential customers
-        with this Bootstrap example. It’s built with default Bootstrap
-        components and utilities with little customization.
-      </p>
-    </div>
+    <section className="py-5 text-center container">
+      <div className="row py-lg-5">
+        <div className="col-lg-6 col-md-8 mx-auto">
+          <h1 className="fw-light">Nick Ecommerce</h1>
+          <p className="lead text-muted">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora odit similique labore, fuga ipsam repellendus aspernatur molestias. Libero voluptate, fugit, autem totam placeat eos illum adipisci voluptatum laboriosam, officiis illo.
+          </p>
+          <p>
+            <a href="#" className="btn btn-primary my-2">
+              Main call to action
+            </a>
+            <a href="#" className="btn btn-secondary my-2">
+              Secondary action
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
   );
 };
 
