@@ -1,23 +1,24 @@
-import React,{useState} from 'react'
-import { useProducts } from '../../context/providers/ProductsContext'
+import React, { useState } from "react";
+import { useProducts } from "../../context/providers/ProductsContext";
+import Spinner from "../../components/ui/Spinner";
 
 const ProductForm = () => {
-  const { addNewProduct,isLoading} = useProducts();
-  const [product,setProduct] = useState({
-    name:'',
-    price:0,
-    quantity:0,
-    description:'',
+  const { addNewProduct, isLoading } = useProducts();
+  const [product, setProduct] = useState({
+    name: "",
+    price: 0,
+    quantity: 0,
+    description: "",
   });
 
-  const handleChange = (e) =>{
-    setProduct({...product,[e.target.name]: e.target.value});
-  }
+  const handleChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addNewProduct(product);
-  }
+  };
 
   return (
     <div className="row h-100">
@@ -32,12 +33,7 @@ const ProductForm = () => {
               >
                 {isLoading ? (
                   <>
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    <span className="ms-2">Loading...</span>
+                    <Spinner />
                   </>
                 ) : (
                   <span>Save</span>
@@ -88,7 +84,7 @@ const ProductForm = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductForm
+export default ProductForm;

@@ -1,45 +1,62 @@
 import { User } from "../models";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config";
+import { userSchema } from "../libs/schema.validator";
+import { signAccessToken } from "../helpers/signAccessToken";
+import createError from "http-errors";
 
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-  const userFound = await User.findOne({ email });
+export const login = async (req, res, next) => {
+  try {
+    const result = await userSchema.validateAsync(req.body);
 
-  if (!userFound) return res.status(401).json({ message: "User not found" });
+    const userFound = await User.findOne({ email: result.email });
 
-  const isMatch = await userFound.validPassword(password);
+    if (!userFound) return res.status(401).json({ message: "User not found" });
 
-  if (!isMatch) return res.status(401).json({ message: "Invalid password" });
+    const isMatch = await userFound.validPassword(result.password);
 
-  jwt.sign({ id: userFound._id }, JWT_SECRET, (err, token) => {
-    err ? res.status(500).send(err) : res.json({ token });
-  });
-};
+    if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 
-export const register = async (req, res) => {
-  const { email, password } = req.body;
-  const newUser = new User({ email, password });
+    const token = await signAccessToken(userFound.id);
 
-  newUser.password = await newUser.generateHash(newUser.password);
-
-  const userFound = await User.findOne({ email });
-
-  if (userFound) {
-    res.statusMessage = "User already exists";
-    return res.status(400).json({ message: "User already exists" });
+    res.json({ token });
+  } catch (err) {
+    if (err.isJoi) return next(createError.BadRequest());
+    next(err);
   }
-
-  const userSaved = await newUser.save();
-
-  jwt.sign({ id: userSaved._id }, JWT_SECRET, (err, token) => {
-    err ? res.status(500).send(err) : res.json({ token });
-  });
 };
 
+export const register = async (req, res, next) => {
+  try {
+    const result = await userSchema.validateAsync(req.body);
+    console.log(result);
+    const userFound = await User.findOne({ email: result.email });
+
+    if (userFound) {
+      res.statusMessage = "User already exists";
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const newUser = new User({
+      email: result.email,
+      password: result.password,
+    });
+
+    newUser.password = await newUser.generateHash(newUser.password);
+
+    const userSaved = await newUser.save();
+
+    jwt.sign({ id: userSaved._id }, JWT_SECRET, (err, token) => {
+      err ? res.status(500).send(err) : res.json({ token });
+    });
+  } catch (err) {
+    if (err.isJoi) return next(createError.NotFound());
+    next(err);
+  }
+};
 
 export const profile = async (req, res) => {
-  const user = await User.findOne({ _id: req.body.userId }).select("-password");
+  const user = await User.findOne({ _id: req.userId }).select("-password");
   if (!user) return res.status(401).json({ message: "User not found" });
 
   res.json(user);

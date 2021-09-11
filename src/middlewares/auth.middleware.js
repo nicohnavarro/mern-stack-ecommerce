@@ -3,7 +3,7 @@ import { JWT_SECRET } from "../config";
 
 export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
-
+  console.log(token);
   if (!token) return res.status(401).send({ message: "Unathorized" });
 
   try {

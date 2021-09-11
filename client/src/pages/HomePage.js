@@ -3,8 +3,8 @@ import Hero from "../components/ui/Hero";
 import { ProductContext } from "../context/providers/ProductsContext";
 
 const HomePage = () => {
-  const { products, isLoading, addNewProduct } = useContext(ProductContext);
-  console.log(addNewProduct);
+  const { products, isLoading } = useContext(ProductContext);
+
   if (isLoading)
     return (
       <div className="d-flex justify-content-center align-items-center h-100 mt-4">
