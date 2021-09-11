@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { getProducts } from "../../api/productApi";
+import { getProducts, saveProducts } from "../../api/productApi";
 import { productsReducer, initialState } from "../reducers/productsReducer";
 import { productActions } from "../actions/productsActions";
 
@@ -30,12 +30,30 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const addNewProduct = async(newProduct) => {
+    dispatch({ type: productActions.LOAD_SAVE_PRODUCTS });
+    try {
+      const res = await saveProducts(newProduct);
+      if (res.data) {
+        dispatch({
+          type: productActions.LOAD_SAVE_PRODUCTS_SUCCESS,
+          payload: res.data,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: productActions.LOAD_SAVE_PRODUCTS_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
   useEffect(() => {
     loadProducts();
   }, []);
 
   return (
-    <ProductContext.Provider value={{ ...state }}>
+    <ProductContext.Provider value={{ ...state,loadProducts,addNewProduct }}>
       {children}
     </ProductContext.Provider>
   );

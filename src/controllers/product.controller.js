@@ -1,4 +1,4 @@
-import Product from "../model/Product";
+import Product from "../models/Product";
 
 export const getProducts = async (req, res) => {
   const products = await Product.find();

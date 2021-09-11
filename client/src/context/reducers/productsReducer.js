@@ -6,7 +6,8 @@ export const initialState = {
 };
 
 export const productsReducer = (state, actions) => {
-  switch (actions.type) {
+  const { type, payload } = actions;
+  switch (type) {
     case productActions.LOAD_PRODUCTS:
       return {
         ...state,
@@ -16,16 +17,33 @@ export const productsReducer = (state, actions) => {
       return {
         ...state,
         isLoading: false,
-        products: actions.payload,
+        products: payload,
       };
     case productActions.LOAD_PRODUCTS_ERROR:
       return {
         ...state,
         isLoading: false,
-        errorMessage: actions.payload,
+        errorMessage: payload,
+      };
+    case productActions.LOAD_SAVE_PRODUCTS:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case productActions.LOAD_SAVE_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        products: [...state.products, payload],
+      };
+    case productActions.LOAD_SAVE_PRODUCTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
       };
 
     default:
-      break;
+      return state;
   }
 };
